@@ -144,9 +144,15 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.spigotmc.......</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.19-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.22</version>
+      <version>1.18.24</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -169,15 +175,15 @@
     </dependency>
     <dependency>
       <groupId>net.minecraft</groupId>
-      <artifactId>1.19</artifactId>
+      <artifactId>1.19.3</artifactId>
       <version>1.0</version>
       <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.19.jar</systemPath>
+      <systemPath>${pom.basedir}/libs/spigot-1.19.3.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>16</maven.compiler.target>
-    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>19</maven.compiler.target>
+    <maven.compiler.source>19</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
