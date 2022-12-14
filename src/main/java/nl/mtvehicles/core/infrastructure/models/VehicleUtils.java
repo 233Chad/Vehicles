@@ -26,15 +26,17 @@ import java.util.*;
 
 /**
  * Useful methods for vehicles
- * @see Vehicle
+ *
  * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
+ * @see Vehicle
  */
 public final class VehicleUtils {
 
     /**
      * A private constructor - makes this a "static class"
      */
-    private VehicleUtils(){}
+    private VehicleUtils() {
+    }
 
     /**
      * HashMap containing information about which trunk a player has opened (determined by vehicle's license plate)
@@ -43,9 +45,9 @@ public final class VehicleUtils {
 
     /**
      * Spawn a vehicle
-     * @param licensePlate Vehicle's license plate
-     * @param location Location where the vehicle should be spawned
      *
+     * @param licensePlate Vehicle's license plate
+     * @param location     Location where the vehicle should be spawned
      * @throws IllegalArgumentException If vehicle with given license plate does not exist
      */
     public static void spawnVehicle(String licensePlate, Location location) throws IllegalArgumentException {
@@ -102,17 +104,19 @@ public final class VehicleUtils {
 
     /**
      * Get license plate from a vehicle item
+     *
      * @param item Vehicle as Item
      * @return Vehicle's license plate
      */
-    public static String getLicensePlate(ItemStack item){
+    public static String getLicensePlate(ItemStack item) {
         NBTItem nbt = new NBTItem(item);
         return nbt.getString("mtvehicles.kenteken");
     }
 
     /**
      * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
-     * @param p Vehicle's owner
+     *
+     * @param p    Vehicle's owner
      * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return Vehicle item
      */
@@ -149,6 +153,7 @@ public final class VehicleUtils {
                         vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
                         vehicle.setFuel(100);
                         vehicle.setHornEnabled((Boolean) configVehicle.get("hornEnabled"));
+                        vehicle.setHornType((String) configVehicle.get("hornType"));
                         vehicle.setHealth((double) configVehicle.get("maxHealth"));
                         vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
                         vehicle.setTrunkRows(1);
@@ -175,10 +180,11 @@ public final class VehicleUtils {
 
     /**
      * Check whether horn is enabled on this vehicle.
+     *
      * @param damage The vehicle item's durability
      * @return True if horn is enabled
      */
-    public static boolean getHornByDamage(int damage){
+    public static boolean getHornByDamage(int damage) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -194,11 +200,33 @@ public final class VehicleUtils {
     }
 
     /**
+     * Get horn type on this vehicle.
+     *
+     * @param damage The vehicle item's durability
+     * @return True if horn is enabled
+     */
+    public static String getHornTypeByDamage(int damage) {
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
+        for (Map<?, ?> configVehicle : vehicles) {
+            List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
+            for (Map<?, ?> skin : skins) {
+                if (skin.get("itemDamage") != null) {
+                    if (skin.get("itemDamage").equals(damage)) {
+                        return (String) configVehicle.get("hornType");
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
      * Check what is the max health of this vehicle.
+     *
      * @param damage The vehicle item's durability
      * @return Max health of the vehicle
      */
-    public static double getMaxHealthByDamage(int damage){
+    public static double getMaxHealthByDamage(int damage) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -215,9 +243,9 @@ public final class VehicleUtils {
 
     /**
      * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #getItemByUUID(Player, String)})
+     *
      * @param carUUID Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return The vehicle item - just aesthetic
-     *
      */
     public static ItemStack getCarItem(String carUUID) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
@@ -241,19 +269,21 @@ public final class VehicleUtils {
 
     /**
      * Check whether an entity is a vehicle
+     *
      * @param entity Checked entity
      * @return True if the entity is a vehicle
      */
-    public static boolean isVehicle(Entity entity){
+    public static boolean isVehicle(Entity entity) {
         return entity.getCustomName() != null && entity instanceof ArmorStand && entity.getCustomName().contains("MTVEHICLES");
     }
 
     /**
      * Get license plate of an entity (which should be a vehicle - see {@link #isVehicle(Entity)}.
+     *
      * @param entity Vehicle's main armor stand
      * @return Vehicle's license plate
      */
-    public static String getLicensePlate(@Nullable Entity entity){
+    public static String getLicensePlate(@Nullable Entity entity) {
         if (entity == null) return null;
         final String name = entity.getCustomName();
         if (name.split("_").length > 1) {
@@ -264,6 +294,7 @@ public final class VehicleUtils {
 
     /**
      * Get the UUID of a car by its license plate
+     *
      * @param licensePlate Vehicle's license plate
      * @return Vehicle's UUID
      */
@@ -297,9 +328,9 @@ public final class VehicleUtils {
 
     /**
      * Get the Vehicle instance by a vehicle's license place
+     *
      * @param licensePlate Vehicle's license plate
      * @return Vehicle instance
-     *
      * @deprecated Renamed to {@link #getVehicle(String)}.
      */
     @Deprecated
@@ -309,9 +340,9 @@ public final class VehicleUtils {
 
     /**
      * Get the Vehicle instance by a vehicle's license place
+     *
      * @param licensePlate Vehicle's license plate
      * @return Vehicle instance
-     *
      * @see Vehicle
      */
     @ToDo("Beautify the code inside this method.")
@@ -353,6 +384,7 @@ public final class VehicleUtils {
         vehicle.setSkinItem((String) vehicleData.get("skinItem"));
         vehicle.setGlow((Boolean) vehicleData.get("isGlow"));
         vehicle.setHornEnabled(ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) vehicleData.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate));
+        vehicle.setHornType(ConfigModule.vehicleDataConfig.isHornTypeSet(licensePlate) ? (String) vehicleData.get("hornType") : ConfigModule.vehicleDataConfig.getHornType(licensePlate));
         vehicle.setHealth(ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) vehicleData.get("health") : ConfigModule.vehicleDataConfig.getHealth(licensePlate));
         vehicle.setBenzineEnabled((Boolean) vehicleData.get("benzineEnabled"));
         vehicle.setFuel((Double) vehicleData.get("benzine"));
@@ -374,6 +406,7 @@ public final class VehicleUtils {
 
     /**
      * Check whether this vehicle exists in the database (vehicleData.yml)
+     *
      * @param licensePlate Vehicle's license plate
      * @return True if vehicle is in the database (vehicleData.yml)
      */
@@ -383,7 +416,8 @@ public final class VehicleUtils {
 
     /**
      * Check whether a player can ride/drive the vehicle.
-     * @param player Player
+     *
+     * @param player       Player
      * @param licensePlate Vehicle's license plate
      * @return True if player is the vehicle's set rider.
      */
@@ -393,7 +427,8 @@ public final class VehicleUtils {
 
     /**
      * Check whether a player can sit in the vehicle.
-     * @param player Player
+     *
+     * @param player       Player
      * @param licensePlate Vehicle's license plate
      * @return True if player is the vehicle's set passenger/member.
      */
@@ -403,6 +438,7 @@ public final class VehicleUtils {
 
     /**
      * Get the UUID of the vehicle's owner
+     *
      * @param licensePlate Vehicle's license plate
      * @return UUID of vehicle's owner
      */
@@ -415,7 +451,8 @@ public final class VehicleUtils {
 
     /**
      * Open a vehicle's trunk to a player
-     * @param p Player who is opening the trunk
+     *
+     * @param p       Player who is opening the trunk
      * @param license Vehicle's license plate
      */
     public static void openTrunk(Player p, String license) {
@@ -448,10 +485,11 @@ public final class VehicleUtils {
 
     /**
      * Check whether a player is inside a vehicle
+     *
      * @param p Player
      * @return True if player is inside any MTV vehicle
      */
-    public static boolean isInsideVehicle(Player p){
+    public static boolean isInsideVehicle(Player p) {
         if (p == null) return false;
         if (!p.isInsideVehicle()) return false;
         return VehicleUtils.isVehicle(p.getVehicle());
@@ -459,9 +497,9 @@ public final class VehicleUtils {
 
     /**
      * Get all the vehicle's set drivers/riders.
+     *
      * @param licensePlate Vehicle's license plate
      * @return String of all the drivers/riders separated by commas
-     *
      * @deprecated Use {@link #canRide(Player, String)} instead.
      */
     @Deprecated
@@ -480,8 +518,9 @@ public final class VehicleUtils {
 
     /**
      * Pick up a vehicle and put it to player's inventory
+     *
      * @param license Vehicle's license plate
-     * @param player Player
+     * @param player  Player
      */
     public static void pickupVehicle(String license, Player player) {
         if (getVehicle(license) == null) {
@@ -534,8 +573,9 @@ public final class VehicleUtils {
 
     /**
      * Create {@link VehicleData} (necessary for driving to work) and make player enter a vehicle.
+     *
      * @param licensePlate Vehicle's license plate
-     * @param p Player who is entering the vehicle
+     * @param p            Player who is entering the vehicle
      */
     @ToDo("Beautify the code inside this method.")
     public static void enterVehicle(String licensePlate, Player p) {
@@ -552,7 +592,7 @@ public final class VehicleUtils {
             return;
         }
 
-        if (!vehicle.isOpen() && !vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")){
+        if (!vehicle.isOpen() && !vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
             p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", vehicle.getOwnerName()));
             return;
         }
@@ -577,7 +617,7 @@ public final class VehicleUtils {
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
-                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location)){
+                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location)) {
                     ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                     return;
                 }

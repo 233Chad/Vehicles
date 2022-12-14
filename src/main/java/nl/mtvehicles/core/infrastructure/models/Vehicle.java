@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  * Vehicle with its specifications
+ *
  * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 public class Vehicle {
@@ -27,6 +28,7 @@ public class Vehicle {
     private double fuel;
     private double fuelUsage;
     private boolean hornEnabled;
+    private String hornType;
     private double health;
     private boolean trunkEnabled;
     private int trunkRows;
@@ -65,6 +67,7 @@ public class Vehicle {
         map.put(VehicleDataConfig.Option.FUEL.getPath(), this.getFuel());
         map.put(VehicleDataConfig.Option.FUEL_USAGE.getPath(), this.getFuelUsage());
         map.put(VehicleDataConfig.Option.HORN_ENABLED.getPath(), this.isHornEnabled());
+        map.put(VehicleDataConfig.Option.HORN_TYPE.getPath(), this.getHornType());
         map.put(VehicleDataConfig.Option.HEALTH.getPath(), this.getHealth());
         map.put(VehicleDataConfig.Option.TRUNK_ENABLED.getPath(), this.isTrunkEnabled());
         map.put(VehicleDataConfig.Option.TRUNK_ROWS.getPath(), this.getTrunkRows());
@@ -85,6 +88,7 @@ public class Vehicle {
 
     /**
      * Delete a vehicle from the database (vehicleData.yml)
+     *
      * @throws IllegalStateException If vehicle is already deleted.
      */
     public void delete() throws IllegalStateException {
@@ -127,7 +131,11 @@ public class Vehicle {
         return hornEnabled;
     }
 
-    public double getHealth(){
+    public String getHornType() {
+        return hornType;
+    }
+
+    public double getHealth() {
         return health;
     }
 
@@ -183,7 +191,7 @@ public class Vehicle {
         return Bukkit.getOfflinePlayer(this.getOwnerUUID()).getName();
     }
 
-    public boolean isOwner(OfflinePlayer player){
+    public boolean isOwner(OfflinePlayer player) {
         return this.owner.equals(player.getUniqueId());
     }
 
@@ -229,6 +237,10 @@ public class Vehicle {
 
     public void setHornEnabled(boolean hornEnabled) {
         this.hornEnabled = hornEnabled;
+    }
+
+    public void setHornType(String hornType) {
+        this.hornType = hornType;
     }
 
     public void setHealth(double health) {
@@ -286,12 +298,12 @@ public class Vehicle {
     public void setOwner(String ownerUUID) {
         try {
             this.owner = UUID.fromString(ownerUUID);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             Main.logSevere("An error occurred while setting a vehicle's owner. This may lead to further issues...");
         }
     }
 
-    public void setOwner(UUID owner){
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
 
@@ -339,13 +351,13 @@ public class Vehicle {
     public void setVehicleType(String vehicleType) {
         try {
             this.vehicleType = VehicleType.valueOf(vehicleType.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             Main.logSevere("An error occurred while setting a vehicle's type. Using default (CAR)...");
             this.vehicleType = VehicleType.CAR;
         }
     }
 
-    public void setVehicleType(VehicleType vehicleType){
+    public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
     }
 }

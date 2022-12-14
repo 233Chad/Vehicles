@@ -317,7 +317,6 @@ public class DefaultConfig extends Config {
         DAMAGE_ENABLED("damageEnabled", false),
         DAMAGE_MULTIPLIER("damageMultiplier", 0.5),
         HORN_COOLDOWN("hornCooldown", 5),
-        HORN_TYPE("hornType", "minetopiaclassic.horn1"),
         TANK_TNT("tankTNT", false),
         TANK_COOLDOWN("tankCooldown", 10),
         DRIVE_UP("driveUp", "both"),

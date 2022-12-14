@@ -158,7 +158,7 @@ public class VehicleMovement {
             if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
             if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
-                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
+                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.vehicleDataConfig.getHornType(license)), 0.9f, 1f);
                 VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
         }

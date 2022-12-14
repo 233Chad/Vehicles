@@ -95,13 +95,13 @@ public class InventoryClickListener extends MTVListener {
         else event.setCancelled(false);
     }
 
-    private void vehicleMenu(){
+    private void vehicleMenu() {
         id.put(player.getUniqueId(), 1);
         raw.put(player.getUniqueId(), clickedSlot);
         MenuUtils.getvehicleCMD(player, id.get(player.getUniqueId()), raw.get(player.getUniqueId()));
     }
 
-    private void chooseVehicleMenu(){
+    private void chooseVehicleMenu() {
         if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
@@ -142,13 +142,13 @@ public class InventoryClickListener extends MTVListener {
                 "WOOL",
                 (short) 5,
                 1,
-                "&a"  + msg.getMessage(Message.CONFIRM),
+                "&a" + msg.getMessage(Message.CONFIRM),
                 "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VEHICLE_GIVE)
         ));
         player.openInventory(inv);
     }
 
-    private void chooseLanguageMenu(){
+    private void chooseLanguageMenu() {
         if (clickedSlot == 0) LanguageUtils.changeLanguage(player, Language.EN);
         else if (clickedSlot == 1) LanguageUtils.changeLanguage(player, Language.NL);
         else if (clickedSlot == 2) LanguageUtils.changeLanguage(player, Language.ES);
@@ -165,7 +165,7 @@ public class InventoryClickListener extends MTVListener {
         player.closeInventory();
     }
 
-    private void confirmVehicleMenu(){
+    private void confirmVehicleMenu() {
         if (clickedSlot == 11) { //cancel getting vehicle
             player.openInventory(skinMenu.get(player.getUniqueId()));
         } else if (clickedSlot == 15) { //accepting getting vehicle
@@ -183,30 +183,32 @@ public class InventoryClickListener extends MTVListener {
             String vehicleName = nbt.getString("mtvehicles.naam");
 
             Vehicle vehicle = new Vehicle();
+            Map<?, ?> vehicleMap = vehicles.get(intSave.get(player.getUniqueId()));
             List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
             List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
             List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
 
             vehicle.setLicensePlate(licensePlate);
             vehicle.setName(vehicleName);
-            vehicle.setVehicleType((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType"));
+            vehicle.setVehicleType((String) vehicleMap.get("vehicleType"));
             vehicle.setSkinDamage(vehicleMenu.get(player.getUniqueId()).getDurability());
             vehicle.setSkinItem(vehicleMenu.get(player.getUniqueId()).getType().toString());
             vehicle.setGlow(false);
-            vehicle.setHornEnabled((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("hornEnabled"));
-            vehicle.setHealth((double) vehicles.get(intSave.get(player.getUniqueId())).get("maxHealth"));
-            vehicle.setBenzineEnabled((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("benzineEnabled"));
+            vehicle.setHornEnabled((Boolean) vehicleMap.get("hornEnabled"));
+            vehicle.setHornType((String) vehicleMap.get("hornType"));
+            vehicle.setHealth((double) vehicleMap.get("maxHealth"));
+            vehicle.setBenzineEnabled((Boolean) vehicleMap.get("benzineEnabled"));
             vehicle.setFuel(100);
-            vehicle.setTrunk((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("kofferbakEnabled"));
+            vehicle.setTrunk((Boolean) vehicleMap.get("kofferbakEnabled"));
             vehicle.setTrunkRows(1);
             vehicle.setFuelUsage(0.01);
             vehicle.setTrunkData(trunkData);
-            vehicle.setAccelerationSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("acceleratieSpeed"));
-            vehicle.setMaxSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("maxSpeed"));
-            vehicle.setBrakingSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("brakingSpeed"));
-            vehicle.setFrictionSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("aftrekkenSpeed"));
-            vehicle.setRotateSpeed((Integer) vehicles.get(intSave.get(player.getUniqueId())).get("rotateSpeed"));
-            vehicle.setMaxSpeedBackwards((Double) vehicles.get(intSave.get(player.getUniqueId())).get("maxSpeedBackwards"));
+            vehicle.setAccelerationSpeed((Double) vehicleMap.get("acceleratieSpeed"));
+            vehicle.setMaxSpeed((Double) vehicleMap.get("maxSpeed"));
+            vehicle.setBrakingSpeed((Double) vehicleMap.get("brakingSpeed"));
+            vehicle.setFrictionSpeed((Double) vehicleMap.get("aftrekkenSpeed"));
+            vehicle.setRotateSpeed((Integer) vehicleMap.get("rotateSpeed"));
+            vehicle.setMaxSpeedBackwards((Double) vehicleMap.get("maxSpeedBackwards"));
             vehicle.setOwner(player.getUniqueId());
             vehicle.setNbtValue(nbt.getString("mtcustom"));
             vehicle.setRiders(riders);
@@ -217,7 +219,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void vehicleRestoreMenu(){
+    private void vehicleRestoreMenu() {
         if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
@@ -233,7 +235,7 @@ public class InventoryClickListener extends MTVListener {
         player.getInventory().addItem(clickedItem);
     }
 
-    private void vehicleEditMenu(){
+    private void vehicleEditMenu() {
         switch (clickedSlot) {
             case 10:
                 MenuUtils.menuEdit(player);
@@ -256,7 +258,7 @@ public class InventoryClickListener extends MTVListener {
                     String licensePlate = nbt.getString("mtvehicles.kenteken");
                     VehicleUtils.getVehicle(licensePlate).delete();
                     player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
-                } catch (Exception e){
+                } catch (Exception e) {
                     player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
                 }
                 player.getInventory().getItemInMainHand().setAmount(0);
@@ -265,7 +267,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void vehicleSettingsMenu(){
+    private void vehicleSettingsMenu() {
         if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
@@ -280,7 +282,7 @@ public class InventoryClickListener extends MTVListener {
 
         boolean isGlowing = (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING);
 
-        if (clickedSlot == 16){
+        if (clickedSlot == 16) {
             ItemMeta itemMeta = player.getInventory().getItemInMainHand().getItemMeta();
             if (isGlowing) {
                 itemMeta.removeEnchant(Enchantment.ARROW_INFINITE);
@@ -309,7 +311,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void vehicleFuelMenu(){
+    private void vehicleFuelMenu() {
         if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
@@ -344,7 +346,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void vehicleTrunkMenu(){
+    private void vehicleTrunkMenu() {
         if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
@@ -378,14 +380,14 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void vehicleMembersMenu(){
+    private void vehicleMembersMenu() {
         if (clickedItem.equals(getCloseItem()))
             player.closeInventory();
         else if (clickedItem.equals(getBackItem()))
             VehicleEdit.editMenu(player, player.getInventory().getItemInMainHand());
     }
 
-    private void vehicleSpeedMenu(){
+    private void vehicleSpeedMenu() {
         if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
@@ -428,14 +430,14 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void jerryCanMenu(){
+    private void jerryCanMenu() {
         player.getInventory().addItem(clickedItem);
     }
 
-    private void voucherRedeemMenu(){
+    private void voucherRedeemMenu() {
         if (clickedSlot == 15) { //Yes
             String carUUID = VehicleVoucherListener.voucher.get(player);
-            if (VehicleUtils.getItemByUUID(player, carUUID) == null){
+            if (VehicleUtils.getItemByUUID(player, carUUID) == null) {
                 player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
                 player.closeInventory();
                 return;
@@ -450,16 +452,15 @@ public class InventoryClickListener extends MTVListener {
     }
 
 
-    
-    private boolean canGetVehicleFromMenu(){
+    private boolean canGetVehicleFromMenu() {
         final int owned = ConfigModule.vehicleDataConfig.getNumberOfOwnedVehicles(player);
         int limit = -1; //If permission is not specified, players can get as many as they want
 
         if (player.hasPermission("mtvehicles.limit.*")) return true;
 
-        for (PermissionAttachmentInfo permission: player.getEffectivePermissions()) {
+        for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
             String permName = permission.getPermission();
-            if (permName.contains("mtvehicles.limit.") && permission.getValue()){
+            if (permName.contains("mtvehicles.limit.") && permission.getValue()) {
                 try {
                     limit = Integer.parseInt(permName.replace("mtvehicles.limit.", ""));
                     break;
