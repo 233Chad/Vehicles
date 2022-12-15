@@ -198,6 +198,7 @@ public class VehicleMovement {
 
         if (isFalling && vehicleType.isHelicopter()) return;
         if (vehicleType.isHelicopter() && !locBelow.getBlock().getType().equals(Material.AIR)) return;
+        if ((vehicleType.isSubmarine()||vehicleType.isBoat())&&!locBelow.getBlock().getType().equals(Material.WATER)) return;
 
         if (ConfigModule.defaultConfig.usePlayerFacingDriving()){
             rotateVehicle(player.getLocation().getYaw());
@@ -304,6 +305,11 @@ public class VehicleMovement {
         final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
+
+        if ((vehicleType.isBoat()||vehicleType.isSubmarine()) && !loc.getBlock().getType().toString().contains("WATER")){
+            VehicleData.speed.put(license, 0.0);
+            return false;
+        }
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
             if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
@@ -685,7 +691,13 @@ public class VehicleMovement {
         }
 
         if (blockName.contains("WATER")) {
-            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            if (vehicleType.isBoat()) {
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            } else if (vehicleType.isSubmarine()) {
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            } else {
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            }
             return;
         }
 
