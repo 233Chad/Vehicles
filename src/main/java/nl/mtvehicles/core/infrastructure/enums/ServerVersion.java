@@ -37,10 +37,14 @@ public enum ServerVersion {
      */
     v1_18_R2,
     /**
-     * 1.19
+     * 1.19-1.19.2
      * @since 2.4.3
      */
     v1_19_R1,
+    /**
+     * 1.19.3
+     * @since 2.5.0
+     */
     v1_19_R2;
 
     public boolean is1_12(){
